@@ -1,0 +1,344 @@
+GIT:(Global Information Tracker)
+===
+=>is a version control system. used to communicate with GitHub repository
+=>Git is the tool used to track changes in your code
+=>It will maintain multiple versions of the same file
+=>It records every modification, addition, or deletion.
+=> it runs: On your local machine (command line or GUI tools).
+
+=>Git allows tracking of all code changes:
+Who modified
+When modified
+What was modified
+Why modified
+
+=>Git stores this information in the commit history, which you can view using commands like git log or git show.
+
+GITHUB:
+=======
+=>GitHub is a platform which is used to store all code at one place.
+=>GitHub helps with integration, especially in collaborative environments.
+=>it runs: On the web (github.com).
+
+=>On GitHub, we can create repositories to store project code.
+=>All developers can connect to the GitHub repository for code integration (making code integration very easy).
+
+Environment Setup:
+------------------
+1.Create an account at github.com (free of cost).
+2.Download & install Git client software: https://git-scm.com/downloads
+3.Open Git Bash and configure your name and email:
+    git config --global user.name "your-name"
+    git config --global user.email "your-email"
+Configuring name and email is a one-time process.
+
+What is a GitHub Repository?:
+------------------------------
+=>A repository is a place to store project source code/files.
+=>For each project, one GitHub repository is created.
+=>Two types of repositories:
+Public Repo: Anybody can see & you choose who can commit.
+Private Repo: You choose who can see & who can commit.
+Example:
+Project Git Repo URL: https://github.com/ashokitschool/sbi_loans_app.git
+
+Project team members use the repo URL to connect.
+
+Git Architecture:
+------------------
+1.Working Tree
+2.Staging Area
+3.Local Repository
+4.Central Repository (Remote)
+
+->To see the version of git
+  >git --version
+
+Basic commands:
+------------------
+git init
+git add .
+git status
+git commit -m "msg"
+git remote add origin <url>
+git push
+git pull
+git log
+git clone <url>
+
+
+Git Bash Commands:
+-------------------
+git init                                 # Initialize working tree
+git add <file-name>                      # Add file to staging area (file is getting tracked)
+git add .                                # Add all files to staging area
+git status                               # Show working tree status(files are tracked or untracked)	
+
+git commit: 
+------------
+git commit -m "msg"                      # Commit staged files to local repo
+git commit -m "msg" filename             # commit specific file to local repo
+git commit --amend -m “message”          # To edit the lastest commit message
+git commit --amend --author “name <mail>" # To edit author for latest commit 
+git commit --amend --no-edit             # To add staged files to commit the changes with prev commit 
+=>for every commit it will create a commit id.
+
+
+git remote add origin <url>              # To create link between central repo and working directory.
+
+git push                                 # Push local commits to remote repo
+
+git restore <file>                       # Discard changes (files are in working tree)
+git restore <filename>                   # restore the file that was deleted (i.e.,committed or staged)
+git restore --staged <file>              # Unstage a file  (removes it from the staging area)
+git rm --cached <file>                   # To unstage and Stop tracking the file entirely (untracking the file).
+
+
+git log:
+===========
+git log                                  # To get commit history
+git log -2                               # To get top 2 commit history
+git log --follow --all filename          # To get full commits of a single file (how many commits done on a single file)
+git log --oneline                        # To getonly commit id and commit msg 
+git log --pretty=oneline                 # To get only full commit id and commit ms
+
+git show:
+---------
+git show commit-id                       # To get detailed information about a  specific commit.(ex: commit msg,author,changes made) 
+git show commit-id --stat                # To get history of a commit in stat format 
+git show <commit-id> --name-only         # command to display only the files changed in a specific commit
+
+
+git pull                                 # Get latest changes from remote repo
+
+->pull latest changes before you push,Okkjtherwise it will not allow u to push code to the remote repository.
+NOTE: when we use pull command there is a chance of getting conflicts.
+
+Conflict: If 2 developers modify same exact line(s) of data in a file then conflict occur. we need to resolved and we need to commit and push without conflicts.
+--------
+
+git clone <repo-url>                     # Download remote repo to local
+git rm <file-name>                       # Remove a file
+Note: After git rm, commit and push to delete file from remote repo.
+
+
+Git GUI:
+========
+=>A desktop tool to perform Git operations.
+
+=>Run in working tree:
+   >git gui
+
+==========================
+what is .gitignore file ?
+==========================
+=>It is used to specify files and folder to skip from git operations (i.e.,tracking). 
+ex:
+target/
+.project 
+.settings
+
+===============
+Git Branches:
+===============
+Branch: A branch in GitHub (and Git in general) is a parallel version of a repository. It allows you to work on different features, bug fixes, or experiments without affecting the main codebase (usually the main or master branch).
+=>It isolate your work from main branch.
+=>when multiple teams working on same repo then project delivery will become difficult. To make project delivery process simple, we need to maintain multiple branches in git hub repo.
+Note: For every team one git branch is recommended.
+
+ex:
+Recommended Branches:
+main (default)
+develop (development team)
+sit (bug fixing team)
+research (R&D team)
+release (production team)
+
+Multiple teams can work in parallel using branches.
+=>After branching, branch merge can do in 2 ways,
+1.By using git merge new_branchname(cli)
+2.By creating pull request(gui)
+
+1=>Git commands related to branches:
+
+  Create a new branch                    # git branch new-branch-name
+  Switch to a branch                     # git checkout new-branch-name
+  Create and switch to a new branch      # git checkout -b new-branch-name
+  Push a branch to GitHub                # git push origin new-branch-name
+  List all branches                      # git branch
+  To see you were on which branch        # git branch --show-current
+  Delete a branch (locally)              # git branch -d branch-name
+  removes the branch even if it hasn't been merged.  #git branch -D branchname
+  Download branch code from repo         # git clone -b branch-name <url>
+  To change the name of a branch         # git branch -m oldbn newbn
+ 
+
+🛠️ Typical Workflow:
+======================
+# Step 1: Switch to main and pull the latest changes
+git checkout main
+git pull origin main
+
+# Step 2: Create a new feature branch
+git checkout -b feature/my-new-featurwe
+
+# Step 3: Work on your feature, commit changes
+git add .
+git commit -m "Add new feature"
+
+# Step 4: Push the branch to remote
+git push origin feature/my-new-feature
+
+# Step 5: Open a pull request to merge into main
+
+git merge:
+----------
+=>It is used to merge all commits from one branch to another.
+Note: you should merge from main branch
+   >git merge new_bn
+ 
+    #git merge --abort     --->Cancels the merge and keeps main unchanged  
+
+**git conflict: Conflicts only happen when both branches modify the same file, especially the same lines. after the new branch created.
+---------------
+
+
+2.On GitHub (Web Interface):
+---------------------------
+1.Go to your repository.
+2.Click the branch dropdown near the top-left.
+3.Type a new branch name and press Enter to create it.
+4.You can also switch between branches here.
+
+=>Why Branches Are Important,
+Safe experimentation: Try new ideas without affecting the main code.
+Better collaboration: Each team member can work on their own branch.
+
+Lab Task:
+---------
+1.Go to GitHub and create develop branch from main.
+2.Clone the repo (main branch will be cloned by default):
+    >git clone <url>
+3.Switch to develop branch:
+    >git checkout develop
+4.Create a file and push it to develop branch.
+5.Create a Pull Request and merge develop into main.
+
+
+✅ What is Git Cherry-pick?
+===============================
+=>when we use 'git merge' command By default, all commits will merge from one branch to another branch.
+=>If you want to merge specific commit from one branch to another branch, then use git cherry-pick.
+     ex: git cherry-pick <commit-id>
+
+
+Git Interview Concepts:
+========================
+✅ What is a Pull Request?
+=>A Pull Request is used to merge changes from one branch into another.
+
+Example:
+Merging changes from the develop branch to the main branch.
+
+
+✅ What is Git Stash?
+=======================
+=>Git Stash is used to save the current changes in a backup (stash) and make the working directory clean.
+📦 Common Scenarios to Use git stash
+1.You're in the middle of work but need to quickly switch to another branch.
+2.You want to pull updates from the remote and your changes might conflict.
+3.You’re experimenting and want to save your work-in-progress without committing messy code.
+
+Example Scenario:
+JIRA-101 assigned at 9 AM → Work started, partial changes done.
+
+At 11 AM, JIRA-102 assigned → It's critical.
+
+To work on JIRA-102, stash the JIRA-101 changes:
+    >git stash
+
+After pushing JIRA-102 changes, get JIRA-101 changes back to working tree :
+    >git stash apply
+
+To see the stash list:
+    >git stash list
+
+To delete the stash:
+    >git stash clear
+
+To Delete a specific stash
+    >git stash drop stash-id
+
+🧤 Here's What Gets Stashed:
+git stash            # Saves staged (files you’ve added with git add.) + unstaged changes(files you’ve modified but haven’t staged.)
+git stash -u         # Also includes untracked files
+git stash -a         # Includes everything, even ignored files
+
+
+✅ How to Remove Git Local Commits?
+======================================
+=>Use the git reset command to undo local commits.
+Types of Reset:
+1.Soft Reset: Removes commit but retains changes in the staging area.
+  >git reset --soft HEAD~1
+
+2.Hard Reset: Removes both commit and file changes.
+  >git reset --hard HEAD~1
+
+3.Keeps changes in the working directory but unstages them.
+  >git reset --mixed HEAD~1
+
+4.To delete all committs from git
+  >git update-ref -d HEAD
+
+5.To show commits history that were "deleted" or lost
+  >git reflog
+
+6.To restore deleted committs
+  >git cherry-pick <commit-hash>
+   (or)
+  >git reset --hard <commit-hash>
+
+
+✅ How to Revert git Central Repo Commits?
+=============================================
+git revert:
+-----------
+=>Use the git revert command to remove/undo changes from the central repository.
+ ex: git revert <commit-id>
+
+Note: After git revert execution we need execute git push
+       >git push
+
+✅ What is Git Cherry-pick?
+==============================
+=>By default, git merge merges all commits from one branch to another.
+
+=>If you want to merge only a specific commit from one branch to anoter branch, use git cherry-pick.
+   >git cherry-pick <commit-id>
+
+
+✅ Git Pull vs Git Fetch
+==========================
+Command	Description,
+git pull	: Download latest changes from the central repo to working tree directly.
+git fetch	: Downloads changes from central to local repo only.
+note: To merge changes from local repo to working tree we can use 'git merge' command.
+To merge after fetch, run:
+  >git merge
+git pull = git fetch + git merge
+
+
+✅ What is Git Fork?
+======================
+=>Git Fork is used to copy someone else's GitHub repository into your own GitHub account.
+=>Useful for contributing to open-source projects.
+
+
+
+
+
+
+
+
+
