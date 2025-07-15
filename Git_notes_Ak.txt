@@ -65,7 +65,9 @@ git push
 git pull
 git log
 git clone <url>
-
+git remote -v
+git merge
+git rebase
 
 Git Bash Commands:
 -------------------
@@ -85,8 +87,11 @@ git commit --amend --no-edit             # To add staged files to commit the cha
 
 
 git remote add origin <url>              # To create link between central repo and working directory.
+git remote rm origin                     # To remove link between central repo and working directory.
 
 git push                                 # Push local commits to remote repo
+
+git remote -v                            # Displays the list of remote repositories associated with your local Git project.
 
 git restore <file>                       # Discard changes (files are in working tree)
 git restore <filename>                   # restore the file that was deleted (i.e.,committed or staged)
@@ -165,13 +170,15 @@ Multiple teams can work in parallel using branches.
   Switch to a branch                     # git checkout new-branch-name
   Create and switch to a new branch      # git checkout -b new-branch-name
   Push a branch to GitHub                # git push origin new-branch-name
-  List all branches                      # git branch
+  Shows only your local branches         # git branch
+  Shows both local AND remote branches   # git branch -a
   To see you were on which branch        # git branch --show-current
-  Delete a branch (locally)              # git branch -d branch-name
+  Delete a branch (local branch)         # git branch -d branch-name
+  To delete a remote branch              # git push origin --delete branch_name
   removes the branch even if it hasn't been merged.  #git branch -D branchname
   Download branch code from repo         # git clone -b branch-name <url>
   To change the name of a branch         # git branch -m oldbn newbn
- 
+                       
 
 🛠️ Typical Workflow:
 ======================
@@ -201,6 +208,12 @@ Note: you should merge from main branch
 
 **git conflict: Conflicts only happen when both branches modify the same file, especially the same lines. after the new branch created.
 ---------------
+
+git rebase:
+------------
+It is also used to integrate changes from one branch into another,but they do it in very different ways.
+   >git rebase new_bn      -- rewrites the history
+=>This replays your feature commits on top of main, making it look like you started from there.
 
 
 2.On GitHub (Web Interface):
