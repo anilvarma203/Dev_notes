@@ -68,6 +68,8 @@ git clone <url>
 git remote -v
 git merge
 git rebase
+git diff
+
 
 Git Bash Commands:
 -------------------
@@ -113,7 +115,7 @@ git show commit-id                       # To get detailed information about a  
 git show commit-id --stat                # To get history of a commit in stat format 
 git show <commit-id> --name-only         # command to display only the files changed in a specific commit
 
-
+git diff                                 # shows you the differences between commits, branches, files, and more.
 git pull                                 # Get latest changes from remote repo
 
 ->pull latest changes before you push,Okkjtherwise it will not allow u to push code to the remote repository.
@@ -317,7 +319,7 @@ Types of Reset:
 =============================================
 git revert:
 -----------
-=>Use the git revert command to remove/undo changes from the central repository.
+=>Use the git revert command to remove/undo changes from the central repository. And it creates a new commit also.
  ex: git revert <commit-id>
 
 Note: After git revert execution we need execute git push
