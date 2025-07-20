@@ -827,6 +827,9 @@ hostname:
 ==========
 =>is used to display or set the system's hostname. The hostname is the name assigned to a computer or device on a network.
 
+hostname newname	                -- Temporarily sets a new hostname
+sudo hostnamectl set-hostname newname	-- Sets hostname permanently
+
 jobs -l:
 =========
 to list the jobs running in the background.
@@ -1162,13 +1165,16 @@ $ sudo usermod -l <new-name> <old-name>
 Working with User Groups
 ===========================
 
-=> When we create user in linux, for every user one user group also will be created with the given username.
+=> When we create user in linux, for every user one user group also will be created with the given username. & when we delete a user,then group also will gets deleted automatically.
 
 # Display all groups in linux
 $ cat /etc/group
 
 # create group
 $ sudo groupadd <group-name>
+
+# Delete Group
+$ sudo groupdel <group-name>
 
 # Add user to group
 $ sudo usermod -aG <group-name> <username>
@@ -1181,9 +1187,6 @@ $ sudo lid -g <group-name>
 
 # Display one user belongs to which grops
 $ id <username>
-
-# Delete Group
-$ sudo groupdel <group-name>
 
 # Changing groupname
 $ sudo groupmod -n <new-name> <old-name>
