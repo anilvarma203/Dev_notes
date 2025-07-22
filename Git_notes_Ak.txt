@@ -379,6 +379,244 @@ feature:             D'--E'
 
 
 
+                         ========================
+                                MAVEN                  
+                         ========================
+=>MAVEN is a powerful build automation and project management tool primarily used for Java projects. It helps developers manage a project's build process, dependencies, documentation, and more.
+=>it based on POM.xml(Project Object Model): extensible markup language:
+=>pom.xml consists metadata ,dependecies, kind of data, kind of project ,description.
+=>Maven is an open-source project, it is a part of Apache software foundation(ASF).
+
+Note: one project contains only one workspace, each workspace consists of one pom.xml files.
+
+what is build tool:
+---------------------
+=>It is used to set up everything which is required to run your code.
+=>It helps compile, package, test, and deploy Java applications.
+
+=>You define your build process in a pom.xml file (Project Object Model).
+=>maven can build any no.of projects into desired output such as .jar(java archive file), .war(web archive file), and .ear(enterprise archive).
+
+=>for dowloading depenencies visit mvnrepository.com
+
+Dependencies: refers to external libraries or modules your project needs to work.
+       ➤ Instead of manually downloading JAR files, Maven lets you declare them in your pom.xml, and it automatically downloads them for you.
+
+Repository : A repository is a storage location where Maven looks for dependencies.
+Types:
+1.Local Repository:
+• Located on your computer (usually in ~/.m2/repository)
+• Maven checks here first before downloading anything
+
+2.Central Repository:
+• Online repositories like Maven Central
+• If a dependency isn’t found locally, Maven downloads it from here
+
+3.Remote Repository:
+• Used by companies to host their own libraries 
+• Tools like Nexus or Artifactory are often used
+
+Java project structure:
+-----------------------
+pom.xml(dependencies,plugins)
+Application source code
+Test code
+project structure(asserts,resources)
+configurations
+task runner
+reporting
+
+🔄 Maven Build Lifecycle Phases:
+---------------------------------
+1.Validate
+• validate the project structure and configuration before actual build starts.
+
+2.compile
+• Compiles the source code of the project.
+
+3.test
+• Runs the unit tests using a testing framework (e.g., JUnit).
+• To ensure that your code passes all unit tests.
+• Tests are not packaged or deployed.
+
+4.package
+• Packages the compiled code into a distributable format (e.g., JAR or WAR).
+
+5.verify
+• Runs checks to ensure the package is valid and meets quality criteria.
+
+ 6.install
+• Installs the packaged artifact into the local Maven repository (~/.m2/repository) for use by other projects.
+
+7.deploy
+• deploys the final package to a remote repository for sharing with other developers or systems.
+
+8.clean
+•  
+
+MAVEN COMMANDS:   Build Process 
+===============
+way-1:
+------
+Step-1: Install Java (OpenJDK 8)
+     Command: yum install java-1.8.0-openjdk -y
+
+Step-2: Install maven
+     • Install Maven via yum                        --this is the direct option, choose any one option among 2.
+     Command : yum install maven -y (or)
+      
+     • Download from Apache Website                 -- this is manual process 
+     Command : wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
+
+     ->when you do like this, it download the .tar.gz file from Apache's official site.You extract it using
+          >tar -zxvf apache-maven-3.9.4-bin.tar.gz
+
+Step-3: clone the project code from git
+     Command: git clone <url>
+=>After cloning go the navigate to the project directory where it contains pom.xml & src files/folders, and perform maven actions
+
+Step-4: COMPILE THE CODE
+        Command: mvn compile
+
+Step-5: TEST THE CODE
+        Command: mvn test
+
+Step-6: Package THE CODE
+        Command: mvn package
+
+STEP-7: INSTALL THE CODE
+        Command: mvn install
+
+STEP-8: CLEAN THE CODE (opt)
+        Command: mvn clean
+
+NOTE: TO DO AL THESE STEPS IN SINGLE GOAL up to install: : mvn clean package
+
+
+way-2:
+======
+Step-1: Install Java (OpenJDK 8)
+     Command: yum install java-1.8.0-openjdk -y
+
+Step-2: Install maven
+        • Download from Apache Website
+        Command : wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
+
+     ->when you do like this, it download the .tar.gz file from Apache's official site.You extract it using
+          >tar -zxvf apache-maven-3.9.4-bin.tar.gz
+
+     ->Navigate to your desired folder apache-maven-3.9.4 and perform nxt steps.
+
+NOTE: the below step is used insted of cloning, means when we dont have git url, only for practise not fpr real time, use above way for real time.
+
+Step-3: Generate resources  or creating maven project 	                             
+        Command: mvn archetype:generate                                                           
+                                                                                          
+=>while Generate resources it will ask for groupid,artifactid. after completion list the file/dir and move to the artifactid.
+📛 groupId: Think of it like a package name or organization name.
+📦 artifactId: This is the name of your project/module.
+
+Step-4: COMPILE THE CODE
+        Command: mvn compile
+
+Step-5: TEST THE CODE
+        Command: mvn test
+
+Step-6: Package THE CODE
+        Command: mvn package
+
+STEP-7: INSTALL THE CODE
+        Command: mvn install
+
+STEP-8: CLEAN THE CODE (opt)
+        Command: mvn clean
+
+NOTE: TO DO AL THESE STEPS IN SINGLE GOAL up to install: : mvn clean package
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
