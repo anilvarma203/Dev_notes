@@ -1,0 +1,169 @@
+                                                             JENKINS
+                                                            =========
+=>CI-CD is the set of practices that automate the software development and deployment process.
+
+CI:(Continuous Integration)
+===
+CI is a software development practise that involves Developers frequently merging their code changes into a shared/central repository and it detects the change, then running automated build and tests.
+             CI = Continuous build + continuous test
+=>The goal of CI is to improve software quality, early bug detection, faster development, quick feedback.
+                   merge        build/tests
+         developer-------GitHub----------------CI
+           code
+
+CD:(Continuous Delivery/Continuous Deployment): both refer to automating the process of getting new code changes into production, but they differ in their levels of automation,
+
+Continuous Delivery:
+=====================
+code is automatically tested and ready to be deployed to production at any time.
+After a developer finishes coding, the system automatically build, tests, and prepares the code for release. However, the actual deployment to production still requires manual approval.
+          
+            Developer ---> GitHub ---> Dev (Auto Deploy) ---> QA (Auto Deploy) ---> PreProd (Auto Deploy) ---> Prod (Manual Approval Required)
+                      
+• Auto Deploy: Code moves automatically without manual intervention.
+• Manual Approval Required: Deployment to Production requires human approval.
+
+Continuous Deployment:
+========================
+code is automatically deployed to production without any manual interactions.
+After code passes all the tests,it is automatically deployed/pushed to production—no manual approval needed.
+       
+            Developer ---> GitHub ---> Dev (Auto Deploy) ---> QA (Auto Deploy) ---> PreProd (Auto Deploy) ---> Prod (Auto Deploy)
+
+Key Difference:
+• In Continuous Delivery, Prod requires manual approval.
+• In Continuous Deployment, everything is deployed automatically—including Prod.
+
+🚀Advantages of Continuous Delivery:
+---------------------------------------
+1. Faster Time to Market
+2. Improved Product Quality
+3. Reduced Deployment Risk
+4. Easier rollbacks
+5. Continuous feedback 
+
+CI/CD Pipeline:
+===============
+
+   version    Build   unit    Deploy   Auto    Deployed to
+   control            text             text    production
+      |                                               |
+       <________________prodiuction feedback<___________
+
+
+
+
+                                  JENKINS:
+                                  ========
+=>Jenkins is a popular open-source automation server used for continuous integration (CI) and continuous delivery (CD) in software development.
+=>It Automates the process of building, testing, and deploying code.
+=>It consists of plugins.
+=>It is a server based system that runs in servelet containers(application server) such as apache tomcat.
+
+
+Advantages:
+-----------
+• jenkins fallow master-slave architecture.
+• you can write your own plugins, can use the community plugin also.
+• Scalability with Distributed Builds.
+  -Tasks are spread across multiple slave nodes, allowing Jenkins to run builds in parallel and drastically reduce build times.
+
+🛠️ Key Features
+• Written in Java and runs on any platform with a Java runtime.
+• The default port of jenkins is 8080.
+• Dependency for jenkins installation is JAVA.               url: sudo yum install java-11-amazon-corretto-headless
+• Jenkins Can be installed via WAR files(deploying jenkins WAR file into servlet containers), native packages, or Docker images.
+
+jenkins alternatives:
+---------------------
+gitlab
+buddy
+
+JENKINS CLASS-1 (JENKINS SETUP):
+===================================
+STEP-1: LAUNCH AN EC2 INSTANCE WITH SEPARATE SECURITY GROUP
+STEP-2: GO TO JENKINS.IO AND COPY PASTE THOSE 2 LINKS
+          >sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+          >sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+STEP-3: INSTALL JAVA
+         >sudo yum install java-11-amazon-corretto-headless
+
+STEP-4: INSTALL JENKINS
+        >sudo yum install jenkins -y
+
+STEP-5: START THE JENKINS
+        > systemctl start jenkins
+
+To check jenkins status : systemctl status jenkins
+To stop jenkins : systemctl stop jenkins
+
+
+YT:__
+     |
+installation:
+============
+1.deploying jenkins WAR file into servlet containers:
+steps:
+• create an server with portnumber 8080.
+• install java                     --(java -version)
+    > url: sudo yum install java-11-amazon-corretto-headless
+
+• Later install tomcat
+    >search apache tomcat download 9
+    >copy the link of tar file and go to the server then download 
+         >wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.108/bin/apache-tomcat-9.0.108.tar.gz.asc
+    >we get tar file then untar it,
+         >tar xf apache-tomcat-9.0.108.tar.gz
+    >change the directoty to apache/bin and search path and copy the path,
+         >cd apache-tomcat-9.0.108/bin/
+         >pwd
+    >set the path,open and add
+         >vi /etc/profile
+         >export CATALINA_HOME=/root/apache-tomcat-9.0.108/
+         >export PATH=$PATH:/apache-tomcat-9.0.108/bin
+    >change directory to back
+         >cd 
+    >execute those commands in command line.
+           >export CATALINA_HOME=/root/apache-tomcat-9.0.108/ 
+           >export PATH=$PATH:/apache-tomcat-9.0.108/bin
+    >start the tomcat
+           >startup.sh
+    >now we can access tomcat from the browser, so copy server ip and paste in browser
+           >ipadd:8080
+
+• Now we need to get the jenkins WAR file and we need to deploy to the application server
+    >search jenkins war download
+    >copy the link 
+    >go to ther server and change dir to webapps and download warfile
+         >cd apache-tomcat-9.0.108/weebapps/
+         >wget https://updates.jenkins.io/download/war/2.523/jenkins.war
+    >installation completed you will see jenkins folder and jenkinswar 
+• Go and check from the browser,
+     >ipadd:8080/jenkins
+     >it will ask unlock jenkins so, copy the path shown
+     >go to the server and open it.
+            >cat path
+     >copy the token and paste it and contine
+     >nxt customize jenkins with suggested pluggins
+     >enter details, save and continue 
+
+2.Installing jenkins as a service:
+steps:
+• create a server
+• search jenkins installation  
+    >click on linux and select redhat
+    >copy commands one by one in server
+    >when jenkins is running ,copy ipadd and go to browser 
+        >ipadd:8080
+     >it will ask unlock jenkins so, copy the path shown
+     >go to the server and open it.
+            >cat path
+     >copy the token and paste it and contine
+     >nxt customize jenkins with suggested pluggins
+     >enter details, save and continue 
+
+
+
+
+
+

@@ -452,7 +452,7 @@ reporting
 • deploys the final package to a remote repository for sharing with other developers or systems.
 
 8.clean
-•  
+•  To clean the previous builds before new build.
 
 MAVEN COMMANDS:   Build Process 
 ===============
@@ -462,10 +462,10 @@ Step-1: Install Java (OpenJDK 8)
      Command: yum install java-1.8.0-openjdk -y
 
 Step-2: Install maven
-     • Install Maven via yum                        --this is the direct option, choose any one option among 2.
+     i• Install Maven via yum                        --this is the direct option, choose any one option among 2.
      Command : yum install maven -y (or)
       
-     • Download from Apache Website                 -- this is manual process 
+     ii• Download from Apache Website                 -- this is manual process 
      Command : wget https://dlcdn.apache.org/maven/maven-3/3.9.4/binaries/apache-maven-3.9.4-bin.tar.gz
 
      ->when you do like this, it download the .tar.gz file from Apache's official site.You extract it using
