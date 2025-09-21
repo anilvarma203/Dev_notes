@@ -79,81 +79,55 @@ jenkins alternatives:
 gitlab
 buddy
 
+PIPELINE: STEP-BY-STEP EXECUTION OF A PROCESS.
+SERIES OF EVENTS INTERLINKED WITH EACH OTHER.
+
+CODE --- > BUILD  -- > TEST --- > ARTIFACT  --- > DEPLOYMENT (DEV/TEST/UAT/PROD) 
+
+
 JENKINS CLASS-1 (JENKINS SETUP):
-===================================
-STEP-1: LAUNCH AN EC2 INSTANCE WITH SEPARATE SECURITY GROUP
-STEP-2: GO TO JENKINS.IO AND COPY PASTE THOSE 2 LINKS
-          >sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
-          >sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
-STEP-3: INSTALL JAVA
+======================================================================================================================
+LAUNCH AN EC2 INSTANCE WITH SEPARATE SECURITY GROUP
+         >sudo yum update –y
+
+STEP-1: INSTALLING GIT JAVA-1.8.0 MAVEN 
+yum install git java-1.8.0-openjdk maven -y
+
+STEP-2:GETTING THE REPO (jenkins.io --> download -- > redhat) COPY PASTE THOSE 2 LINKS
+       >sudo wget -O /etc/yum.repos.d/jenkins.repo  https://pkg.jenkins.io/redhat-stable/jenkins.repo
+       >sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+
+STEP-3: INSTALL JAVA and JENKINS
          >sudo yum install java-11-amazon-corretto-headless
+         >sudo yum install jenkins -y
 
-STEP-4: INSTALL JENKINS
-        >sudo yum install jenkins -y
-
-STEP-5: START THE JENKINS
+STEP-4: START THE JENKINS   (when we download service it will on stopped state)
         > systemctl start jenkins
 
 To check jenkins status : systemctl status jenkins
 To stop jenkins : systemctl stop jenkins
 
 
-YT:__
-     |
-installation:
-============
-1.deploying jenkins WAR file into servlet containers:
-steps:
-• create an server with portnumber 8080.
-• install java                     --(java -version)
-    > url: sudo yum install java-11-amazon-corretto-headless
+execute jenkins setup commands at once:
+--------------------------------------
+sudo yum update –y
+yum install git java-1.8.0-openjdk maven -y
+sudo wget -O /etc/yum.repos.d/jenkins.repo  https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum install java-21-amazon-corretto -y
+sudo yum install jenkins -y
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
 
-• Later install tomcat
-    >search apache tomcat download 9
-    >copy the link of tar file and go to the server then download 
-         >wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.108/bin/apache-tomcat-9.0.108.tar.gz.asc
-    >we get tar file then untar it,
-         >tar xf apache-tomcat-9.0.108.tar.gz
-    >change the directoty to apache/bin and search path and copy the path,
-         >cd apache-tomcat-9.0.108/bin/
-         >pwd
-    >set the path,open and add
-         >vi /etc/profile
-         >export CATALINA_HOME=/root/apache-tomcat-9.0.108/
-         >export PATH=$PATH:/apache-tomcat-9.0.108/bin
-    >change directory to back
-         >cd 
-    >execute those commands in command line.
-           >export CATALINA_HOME=/root/apache-tomcat-9.0.108/ 
-           >export PATH=$PATH:/apache-tomcat-9.0.108/bin
-    >start the tomcat
-           >startup.sh
-    >now we can access tomcat from the browser, so copy server ip and paste in browser
-           >ipadd:8080
+------------------------------------------
+=>if you get space error, execute this command.
+    >sudo mount -o remount,size=4G /tmp
+    sudo systemctl stop jenkins
+    sudo systemctl start jenkins
 
-• Now we need to get the jenkins WAR file and we need to deploy to the application server
-    >search jenkins war download
-    >copy the link 
-    >go to ther server and change dir to webapps and download warfile
-         >cd apache-tomcat-9.0.108/weebapps/
-         >wget https://updates.jenkins.io/download/war/2.523/jenkins.war
-    >installation completed you will see jenkins folder and jenkinswar 
-• Go and check from the browser,
-     >ipadd:8080/jenkins
-     >it will ask unlock jenkins so, copy the path shown
-     >go to the server and open it.
-            >cat path
-     >copy the token and paste it and contine
-     >nxt customize jenkins with suggested pluggins
-     >enter details, save and continue 
-
-2.Installing jenkins as a service:
-steps:
-• create a server
-• search jenkins installation  
-    >click on linux and select redhat
-    >copy commands one by one in server
-    >when jenkins is running ,copy ipadd and go to browser 
+accessing jenkins:
+-----------------
+>when jenkins is running ,copy ipadd and go to browser 
         >ipadd:8080
      >it will ask unlock jenkins so, copy the path shown
      >go to the server and open it.
@@ -161,6 +135,395 @@ steps:
      >copy the token and paste it and contine
      >nxt customize jenkins with suggested pluggins
      >enter details, save and continue 
+
+================================================================================================================
+
+Day-2:
+======
+=>Getting code from git repo to ci server and performing Continuous Integration manually and automatically.
+
+JOB:
+----
+=>job (also called a project/Item) is a defined task/instructions or workflow that Jenkins executes automatically.
+🔧 What a Jenkins Job Does
+A job can:
+• Pull code from a repository (like GitHub)
+• Compile the code
+• Run tests
+• Package the application
+• Deploy it to a server
+• Send notifications or trigger other jobs
+
+=>Jenkins default home directory,
+   >/var/lib/jenkins/workspace
+   ->Stores job configs, plugins, build history, etc.
+
+=>Getting code from git repo to ci server manually.                                                     automatically getting code from repo to ci server when developer commit code changes to repo
+🛠️ Steps to Create a Jenkins Job:
+==================================                                                                   |=>By using webhook,set up webhooks and configure Jenkins to respond to them.
+1.Log in to Jenkins                                                                                  |
+  >Open your Jenkins dashboard at http://<your-server-ip>:8080                                       |1.Set Up GitHub Webhook
+                                                                                                     |  • Go to your GitHub repository → Settings → Webhooks
+2.Click “New Item”                                                                                   |  • Click Add Webhook
+   >It’s usually on the left sidebar.                                                                |       >Payload URL: http://<your-jenkins-server>:8080/github-webhook/
+                                                                                                     |       >Content type: application/json                         
+3.Name Your Job                                                                                      |       >Choose to trigger on push events
+   >Give it a meaningful name (e.g., Build-MyApp)                                                    |  • Save the webhook
+                                                                                                     |  =>This tells GitHub to notify Jenkins whenever someone pushes code.
+4.Choose Job Type                                                                                    |
+   >Select Freestyle Project and click OK                                                            |2. Configure Jenkins Job
+                                                                                                     |  • Create or select a job, and go to configure
+5.Configure Your Job                                                                                 |  • Under Source Code Management, select Git and enter your repo URL
+   >Under General, add a description if you like.                                                    |  • Under Build Triggers, check:
+   >select github project and give projecturl                                                        |       ✅ GitHub hook trigger for GITScm polling
+   >In Source Code Management, choose Git and enter your repo URL and branch.                        |
+                                                                                                     |
+6.Save and Run                                                                                       |
+   >Click Save, then hit Build Now to test it out.	                                                |
+
+NOTE: before you build a job, you should install git in your server, then only it will work, otherwise build fails and throw error
+      "ERROR: Error cloning remote repo 'origin' "
+
+
+Trigger: job should build automatically.
+🔁 What Triggers Do:
+Triggers define when and why Jenkins should execute a job. Instead of manually clicking “Build Now,” you can set up triggers to launch builds based on specific events or schedules.
+
+
+
+=>alternative ways to automatically fetch code into Jenkins without using webhooks,
+1.Build periodically:
+-----------------------
+🕒 How to Set Up “Build Periodically” in Jenkins
+• Go to your Jenkins job
+     >Click on the job name → Configure
+
+• Scroll to “Build Triggers”
+    >Check ✅ Build periodically
+
+• Enter a cron expression in the “Schedule” box
+Example:                                                                                              
+Code
+H/15 * * * *   # Every 15 minutes
+• click on save.
+
+2.Poll SCM:
+-----------
+Jenkins can periodically check your Git repo for changes using SCM polling.
+
+🔁 How Poll SCM Works Without Webhook
+=>Jenkins will periodically check your Git repository for changes.
+=>If it detects a new commit, it will trigger the job and pull the latest code.
+=>If there are no changes, Jenkins skips the build.
+
+How to set it up:
+• In your Jenkins job, go to Build Triggers
+   >Check ✅ Poll SCM
+
+• Enter a cron schedule like:
+Code
+H/5 * * * *   # Polls every 5 minutes
+
+NOTE:
+If you want to schedule builds based on code changes instead, you’d use Poll SCM or webhooks. But for time-based automation, “Build periodically” is your go-to.
+
+🔍 Comparison Table:
+
+Trigger Type      :       How It Works                                                   : When It Runs               : Efficiency                    : Use Case Example
+
+Build Periodically | Runs the job at fixed time intervals using cron syntax         | Always at scheduled times | ❌ May run even if no changes | Nightly builds or maintenance
+Poll SCM           | Jenkins polls the repo at intervals; runs only if changes found| Only if changes are found | ⚠️ Uses resources for polling | CI for infrequent commits
+Webhook            | Repo sends real-time notification to Jenkins on code push      | Instantly after a commit  | ✅ Most efficient trigger     | Real-time CI/CD development
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+DAY-3:  
+======  
+Job configurations:
+====================
+select Job-->configure->general
+options:
+--------
+1.Discard Old Builds: that helps manage disk space and build history by automatically deleting older builds of a job.
+🧹 What It Does
+When enabled, Jenkins will:
+ • Delete older build records based on criteria you specify
+ • Free up disk space by removing archived artifacts, logs, and metadata
+ • Keep your job history clean and manageable.
+
+2.This Project Is Parameterized: that allows you to define input parameters for your job—making it dynamic and reusable.
+🧹 What It Means
+  • When you check “This project is parameterized”, Jenkins lets you:
+  • Define parameters that users or scripts can provide when triggering the job
+  • Customize job behavior based on those inputs
+
+🧪 Examples of Parameters You Can Add,
+  • Boolean Parameter  :  when you have two options we use this.                          eg: on/off or true/false 
+  • Choice Parameter   :   when you have multiple options.                                eg: dev, test, prod
+  • Credential Parameter:  uesd to store credentials and lets users select a credential from a dropdown when starting a build manually.
+                                                                                           eg: Authenticating to private Git repositories.
+  • String Parameter   :  A String Parameter lets users enter a line of text when triggering a build.
+                                                                                           eg: branch name, version number ENV=staging or VERSION=1.2.3
+  • File Parameter     :  Users upload a file when starting a build.                       eg: from local server to jenkins server.
+
+Triggers
+---------
+1. Build after other projects are built: 
+🔁 What It Means in Context,
+    • This setting allows you to trigger this job (job1) automatically after one or more other Jenkins jobs complete their builds. It’s part of Jenkins' build chaining mechanism, useful for orchestrating multi-step pipelines.
+🧩 How It Works:
+When you enable “Build after other projects are built”, you’ll be prompted to:
+   • Enter the names of upstream jobs (e.g., compile-job, test-suite)
+   • Jenkins will monitor those jobs, and once they are built (i.e., finish execution), it will trigger job1
+=>This is especially useful when:
+    • You want to run a deployment job after tests pass
+    • You’re chaining multiple jobs in a CI/CD pipeline
+    • You’re managing dependencies between projects
+
+2.THROTTLE BUILD:
+To restrict the builds in a certain time or intervals.
+if we dont rsetrict due to immediate builds jenkins might crashdown.
+
+3.By default jenkins will not do concurent builds.
+we need to enable this option in configuration.
+
+Execute concurrent builds if necessary -- > tick it
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+DAY-4:
+======
+Deploying application in production server:
+--------------------------------------------
+SOFTWARE ARCHITECTURES:
+TYPES:
+1. ONE-TIER ARCHITECTUR
+2. TWO-TIER ARCHITECTURE
+3. THREE-TIER ARCHITECTURE
+4. N-TIER ARCHITECTURES
+
+TIER = LAYER = SERVER
+SERVER: SERVES THE SERVICES TO END USERS.
+CLOUD: AWS, AZURE, GCP, SALESFORCE
+
+FOR EACH ARCHITECTURE WE HAVE 3 LAYERS.
+LAYERS:
+1. PRESENTATION LAYER	: WEB SERVER
+2. BUSINESS/LOGIC LAYER	: APP SERVER
+3. DATA LAYER		: DB SERVER
+
+----------------------------------------------------------------------------------------------------
+| WEB SERVER                          | APP SERVER                          | DATA SERVER            |
+|------------------------------------|-------------------------------------|------------------------|
+| AKA: Presentation Layer            | AKA: Business/Logic Layer           | AKA: Data Layer        |
+| Purpose: To view the application   | Purpose: To use the application     | Purpose: To store data |
+| Part: Frontend                     | Part: Backend                       | Part: Data Layer       |
+| Who: UI/UX Developers              | Who: Backend Developers             | Who: DB Administrators |
+| What: Frontend Technologies        | What: Programming Languages         | What: DB Languages     |
+| Examples:                          | Examples:                           | Examples:              |
+| - HTML, CSS, JavaScript            | - Python, Java, .NET, C             | - MySQL, MSSQL         |
+| - Apache, Nginx                    | - Tomcat, Nginx, IIS                | - Oracle, DynamoDB     |
+----------------------------------------------------------------------------------------------------
+
+TOMCAT:
+=======
+WEBSITE: FRONTEND -- > DB IS OPT
+WEBAPP: FRONTEND + BACKEND -- > DB IS MANDATORY
+
+ITS A WEB APPLICATION SERVER USED TO DEPLOY JAVA APPLICATIONS.
+AGENT: JAVA-11
+PORT: 8080
+WE CAN DEPLOY OUR ARTIFACTS.
+ITS FREE AND OPENSOURCE
+IT IS WRITTEN ON JAVA LANGUAGE.
+YEAR: 1999 
+
+war : tomcat/webapps
+jar : tomcat/lib
+
+ALTERNATIVES: NGINX, IIS, WEBSPHERE, JBOSS, GLASSFISH
+
+TOMCAT SETUP:
+=============
+• CREATE A NEW SERVER WITH PORT 8080
+• INSTALL JAVA: yum install java-11-amazon-corretto-headless                                 <---tomcat dependency is java
+
+STEP-1: DOWNLOAD TOMCAT (dlcdn.apache.org)
+   • wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.109/bin/apache-tomcat-9.0.109.tar.gz
+
+STEP-2: EXTRACT THE FILES
+   • tar -xvzf apache-tomcat-9.0.109.tar.gz	
+
+STEP-3: CONFIGURE USER, PASSWORD & ROLES
+   • vim apache-tomcat-9.0.109/conf/tomcat-users.xml
+
+ 56   <role rolename="manager-gui"/>
+ 57   <role rolename="manager-script"/>
+ 58   <user username="tomcat" password="raham123" roles="manager-gui, manager-script"/>
+    •  ✅ This enables login to the Manager and script-based deployment.
+
+STEP-4: Remove IP Restriction, DELETE LINE 21 AND 22 in context.xml file
+  • vim apache-tomcat-9.0.109/webapps/manager/META-INF/context.xml
+  • ✅ This allows access to the Manager app from remote IPs.
+
+STEP-5: STARTING TOMCAT
+  • sh apache-tomcat-9.0.109/bin/startup.sh
+
+STEP-6: Access Tomcat
+Open your browser and go to:
+    > http://<your-server-ip>:8080
+    >manager apps -- > username: tomcat & password: raham123
+
+
+**********************************
+🚀Steps to deploy an application:
+**********************************
+=>Pipeline stages,
+
+ Developers          pull        ci server               deploy         prod server
+       eg:git   -------------->    build+test    ------------------->      .war 
+                                     .war                                ex:tomcat
+                                 ex:jenkins
+
+
+STAGE-1: Getting code to ci server automaticaly
+----------------------------------------------------
+
+1.Log in to Jenkins
+   • Open: http://<your-server-ip>:8080
+
+2.Create a New Job
+   • Click “New Item”
+   • Name it (e.g., Build-MyApp)
+   • Choose Freestyle Project, click OK
+
+3.Configure the Job
+   • Under General, optionally add a description
+   • Check “GitHub project” and enter your repo URL
+   • Under Source Code Management, choose Git
+        >Enter your GitHub repo URL and branch (e.g., main)
+
+4.Enable Webhook Trigger
+   • Go to Build Triggers
+   • ✅ Check “GitHub hook trigger for GITScm polling”
+  
+5. Save the Job
+   • Click Save
+   • You can test manually with Build Now once
+
+🌐 GitHub Webhook Setup
+1.Go to Your GitHub Repo
+   • Navigate to Settings → Webhooks
+
+2.Add a New Webhook
+   • Click “Add Webhook”
+   • Payload URL: http://<your-jenkins-server>:8080/github-webhook/
+   • Content type: application/json
+   • Choose to trigger on push events
+   • Click Save
+
+✅ This tells GitHub to notify Jenkins whenever someone pushes code.
+
+
+STAGE-2: Build the code
+------------------------
+1.To build we use maven, then download maven and its dependency java
+   • yum install java-1.8.0-openjdk -y
+   • yum install maven -y
+
+2. Choose Your Build Tool
+    >Depending on your project type:
+      Project Type	Build Tool	Common Command
+      Java (Maven)	Maven	        mvn clean install
+
+3.Configure Jenkins Build Steps
+   • Go to Configure
+   • Scroll to Build section
+   • Click Add build step → Invoke top-level Maven targets
+   • Fill in:
+      Goals:
+   Code
+     clean package
+   •save.
+   • click on Build it will generate artifact in target directoty
+       .war --build success
+       surefire--test success
+ 
+
+STAGE-3: Deploy Code into Tomcat After Build
+--------------------------------------------
+TOMCAT SETUP:
+=============
+• CREATE A NEW SERVER WITH PORT 8080
+• sudo yum update -y
+sudo yum install java-11-amazon-corretto-headless -y                               <---tomcat dependency is java
+
+STEP-1: DOWNLOAD TOMCAT (dlcdn.apache.org)
+   • wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.109/bin/apache-tomcat-9.0.109.tar.gz
+
+
+STEP-2: EXTRACT THE FILES
+   • tar -xvzf apache-tomcat-9.0.109.tar.gz	
+   • cd apache-tomcat-9.0.109
+
+STEP-3: Remove IP Restriction for Manager App
+         ->DELETE LINE 21 AND 22 in context.xml file
+  • vim webapps/manager/META-INF/context.xml
+  • ✅ This allows access to the Manager app from remote IPs.
+
+STEP-4: CONFIGURE Tomcat USER, PASSWORD & ROLES
+   • vim conf/tomcat-users.xml
+
+<role rolename="manager-gui"/>
+<role rolename="manager-script"/>
+<user username="tomcat" password="yourpassword" roles="manager-gui,manager-script"/>
+    •  ✅ This enables login to the Manager and script-based deployment.
+
+
+STEP-5: STARTING TOMCAT
+  • sh bin/startup.sh
+
+STEP-6: Access Tomcat
+Open your browser and go to:
+    > http://<your-server-ip>:8080
+    >manager apps -- > username: tomcat & password: raham123
+
+
+=>Here, we using jenkins to deploy application automatically, so go to jenkins,here we need one plugin to deploy
+     • Go to manage jenkins
+         • plugins -> Available plugins ->install "deploy to containers"
+=>Finally go to jenkins job,
+      • configure ->post-build actins ->Deploy war/ear a container
+      • give .war file location in war/ear files section
+          target/*.war  
+      • context path ->any name eg:application name
+      • containers -> Add containers ->tomcat 9
+      • credentials ->add ->jenkins ->give tomcat username and password ->add ->select 
+      • give tomcat url http://<ip>:8080  ->save  ->build now
+
+----------=============================-----------------------------[==================================================
+📂 Directory Overview:
+------------------------
+Folder	      Purpose
+/bin	  Startup and shutdown scripts
+/conf	  Configuration files (server.xml)
+/webapps  Deploy your .war files here
+/logs	    Tomcat logs
+/lib	  Java libraries used by Tomcat
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

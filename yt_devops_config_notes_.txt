@@ -1,0 +1,73 @@
+                                                               devops
+                                                               ======
+Jenkins setup: 2 ways
+--------------
+YT:__
+     |
+installation:
+============
+1.deploying jenkins WAR file into servlet containers:
+steps:
+• create an server with portnumber 8080.
+• install java                     --(java -version)
+    > url: sudo yum install java-11-amazon-corretto-headless
+
+• Later install tomcat
+    >search apache tomcat download 9
+    >copy the link of tar file and go to the server then download 
+         >wget https://downloads.apache.org/tomcat/tomcat-9/v9.0.108/bin/apache-tomcat-9.0.108.tar.gz.asc
+    >we get tar file then untar it,
+         >tar xf apache-tomcat-9.0.108.tar.gz
+    >change the directoty to apache/bin and search path and copy the path,
+         >cd apache-tomcat-9.0.108/bin/
+         >pwd
+    >set the path,open and add
+         >vi /etc/profile
+         >export CATALINA_HOME=/root/apache-tomcat-9.0.108/
+         >export PATH=$PATH:/apache-tomcat-9.0.108/bin
+    >change directory to back
+         >cd 
+    >execute those commands in command line.
+           >export CATALINA_HOME=/root/apache-tomcat-9.0.108/ 
+           >export PATH=$PATH:/apache-tomcat-9.0.108/bin
+    >start the tomcat
+           >startup.sh
+    >now we can access tomcat from the browser, so copy server ip and paste in browser
+           >ipadd:8080
+
+• Now we need to get the jenkins WAR file and we need to deploy to the application server
+    >search jenkins war download
+    >copy the link 
+    >go to ther server and change dir to webapps and download warfile
+         >cd apache-tomcat-9.0.108/weebapps/
+         >wget https://updates.jenkins.io/download/war/2.523/jenkins.war
+    >installation completed you will see jenkins folder and jenkinswar 
+• Go and check from the browser,
+     >ipadd:8080/jenkins
+     >it will ask unlock jenkins so, copy the path shown
+     >go to the server and open it.
+            >cat path
+     >copy the token and paste it and contine
+     >nxt customize jenkins with suggested pluggins
+     >enter details, save and continue 
+
+2.Installing jenkins as a service:
+steps:
+• create a server
+• search jenkins installation  
+    >click on linux and select redhat
+    >copy commands one by one in server
+    >when jenkins is running ,copy ipadd and go to browser 
+        >ipadd:8080
+     >it will ask unlock jenkins so, copy the path shown
+     >go to the server and open it.
+            >cat path
+     >copy the token and paste it and contine
+     >nxt customize jenkins with suggested pluggins
+     >enter details, save and continue 
+
+
+
+
+
+
