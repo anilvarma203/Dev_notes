@@ -4,12 +4,14 @@
 
 CI:(Continuous Integration)
 ===
-CI is a software development practise that involves Developers frequently merging their code changes into a shared/central repository and it detects the change, then running automated build and tests.
+CI is a software development practise that involves Developers frequently merging their code changes into a shared/central repository and it detects the change, and runs automated build and tests.
              CI = Continuous build + continuous test
-=>The goal of CI is to improve software quality, early bug detection, faster development, quick feedback.
-                   merge        build/tests
-         developer-------GitHub----------------CI
+
+                   push           build/tests
+         developer------->GitHub---------------->CI server
            code
+=>The goal of CI is to improve software quality, early bug detection, faster development, quick feedback.
+        
 
 CD:(Continuous Delivery/Continuous Deployment): both refer to automating the process of getting new code changes into production, but they differ in their levels of automation,
 
@@ -43,12 +45,12 @@ Key Difference:
 5. Continuous feedback 
 
 CI/CD Pipeline:
-===============
-
-   version    Build   unit    Deploy   Auto    Deployed to
-   control            text             text    production
-      |                                               |
-       <________________prodiuction feedback<___________
+===============                         
+                             (preprod)	 (UAT/performance)       
+   version    Build   unit    Deploy      Auto          Deployed to
+   control            test                test          production
+      |                                                    |
+       <________________prodiuction feedback<_______________
 
 
 
@@ -57,7 +59,7 @@ CI/CD Pipeline:
                                   ========
 =>Jenkins is a popular open-source automation server used for continuous integration (CI) and continuous delivery (CD) in software development.
 =>It Automates the process of building, testing, and deploying code.
-=>It consists of plugins.
+=>It consists of plugins(plugin is like s/w which  adds extra feature to the jenkins).
 =>It is a server based system that runs in servelet containers(application server) such as apache tomcat.
 
 
@@ -85,10 +87,12 @@ SERIES OF EVENTS INTERLINKED WITH EACH OTHER.
 CODE --- > BUILD  -- > TEST --- > ARTIFACT  --- > DEPLOYMENT (DEV/TEST/UAT/PROD) 
 
 
+
+
+
 JENKINS CLASS-1 (JENKINS SETUP):
 ======================================================================================================================
 LAUNCH AN EC2 INSTANCE WITH SEPARATE SECURITY GROUP
-         >sudo yum update –y
 
 STEP-1: INSTALLING GIT JAVA-1.8.0 MAVEN 
 yum install git java-1.8.0-openjdk maven -y
@@ -135,6 +139,8 @@ accessing jenkins:
      >copy the token and paste it and contine
      >nxt customize jenkins with suggested pluggins
      >enter details, save and continue 
+
+
 
 ================================================================================================================
 
@@ -295,6 +301,7 @@ Execute concurrent builds if necessary -- > tick it
 
 DAY-4:
 ======
+
 Deploying application in production server:
 --------------------------------------------
 SOFTWARE ARCHITECTURES:
@@ -501,9 +508,9 @@ Open your browser and go to:
       • context path ->any name eg:application name
       • containers -> Add containers ->tomcat 9
       • credentials ->add ->jenkins ->give tomcat username and password ->add ->select 
-      • give tomcat url http://<ip>:8080  ->save  ->build now
+      • give tomcat url http://<ip>:8080/  ->save  ->build now
 
-----------=============================-----------------------------[==================================================
+------===[------------
 📂 Directory Overview:
 ------------------------
 Folder	      Purpose
@@ -513,13 +520,12 @@ Folder	      Purpose
 /logs	    Tomcat logs
 /lib	  Java libraries used by Tomcat
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-
-
-
-
+DAY-5:
+======
+NEXUS Integration:
+------------------
 
 
 
