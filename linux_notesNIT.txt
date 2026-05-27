@@ -237,8 +237,8 @@ cd : change directory
 		$ cd <dirname>           
 
 		$ cd ../../
-                $ cd -
-                $ cd ~
+                $ cd -         -->To go previous worked dir
+                $ cd ~  & cd   -->to go home dir
 
 
 
@@ -261,6 +261,20 @@ mkdir : make directory (create)
 
 rmdir : delete empty directory
 
+Shell:
+
+1)File management commands:
+=============================
+
+touch:
+======
+touch : to create empty files
+
+		$ touch f1.txt f2.txt
+
+
+
+
 ls:
 ===
 ls           : Lists files and directories in the current directory.
@@ -273,6 +287,9 @@ ls -lt       : Display latest files on top
 
 ls -ltr      : old files on top
 
+ls -F        : Identify file type. Adds special symbols to filenames to indicate type:
+                / → directory   * → executable file @ → symbolic link  | → FIFO (named
+ls -p        : only appends / to directories.Does not mark executables, symlinks, or other special files.
 ls -a        : list all files and directories in the current directory, including hidden files.
 ls -la       : display hidden files (starts with .)
 ls -lh       : Sizes are displayed in a human-readable format (e.g., 4.0K).
@@ -280,18 +297,21 @@ ls -s        : This option displays the size of each file in blocks. The size is
 ls -S        : is used to list files and directories in the current directory, sorted by file size in descending order (largest files first).
 ls -R        : list all files and directories in the current directory and all its subdirectories recursively.
 ls -i        : to display the inode number of each file and directory.
+ls -F        : is used to classify files by adding a symbol at the end of each name.
+ls -d         → shows only directories in the current folder.
 
 ls -d */     : This lists only directories in the current directory.
+ls -d .*/    : This list hidden dir.
+ls -l | grep '^d' : list dir in current dir.
+ls -p |grep / 
+
 find . -maxdepth 1 -type f ! -name ".*" : to list the files in current directory.
 ls -p | grep -v /  :  to list only the files in the current directory, excluding directories.
+        => -p Adds a trailing slash (/) to directory names in the output.
+ls -pa | grep -v / : To inclide hidden files.
 
 
-touch:
-======
-touch : to create empty files
-
-		$ touch f1.txt f2.txt
-
+																			
 
 rm:
 ===
@@ -304,83 +324,7 @@ rm : to delete files/non-empty directories
 		$ rm a*.txt
 
 		$ rm -rf <dir-name>
-
-mv:
-===
-mv : rename & move from one location to another location
-
-		$ mv  <present-name> <new-name>
-
-		$ mv  <present-location>  <new-location>
-
-
-cat:
-=====
-cat : create file with data + append data to file + print file data		
-
-		$ cat > f1.txt 
-
-		$ cat >> f1.txt
-
-		$ cat f1.txt
-
-		$ cat -n f1.txt
-
-		$ cat f1.txt f2.txt > f3.txt
-
-echo:
-=====
-->echo command in Unix/Linux is used to display a line of text on terminal. and also used to create file.
--n   : prevents the trailing newline.
--e   : enables interpretation of backslash escapes.
-       ex: echo -e "Hello,\nWorld!"
-       op: Hello,
-           World!
-
-To create file:
----------------
-echo "content" > file
-
-=>To remove the content of the file but not the file:
-  --------------------------------------------------	
-1st way:
-   >echo -n "" >filename
-
-2nd way:
-    >cat /dev/null > filename
-
-
-view the contents of file:
-===========================
-cat
-tac
-rev
-head
-tail
-more
-less
-
-->cat,tac,rev will display total content at a time.
-->if it is huge content then we have to navigate head,tail,more,less
-
-
-tac : To print file content from bottom to top
-
-    $ tac f1.txt
-
-rev : To reverse each line of data
-
-    $ rev f1.txt
-
-more & less:
-===========
-=>to view the content of the file page by page.
-=>less is more powerful than more.
-
-more: to view the content page by page in fw direction only.
-less:  to view the content page by page in bidirection.
-   press 'd' --> To go to next page
-   press 'b' --> To go to previous page
+                $ rm -ri dirnm      ->interactive -Ask you for confirmation before deleting each file and subdirector
 
 
 
@@ -389,39 +333,47 @@ cp:
 cp : To copy one file data into another file
 
 1. Copying a file in the same location
-    $ cp f1.txt  f2.txt
+$ cp f1.txt f2.txt
 
 2. Copying a file in a different location.
-   $ cp file1 /tmp
+$ cp file1 /tmp
 
 3. Copying a file in a different location with filename.
-   $ cp file1 /tpm/f1.backup
+$ cp file1 /tpm/f1.backup
 
 4. Copying multiple files into directroy.
-   $ cp file1 file2 file3 files.dir
- 
-->ensure that the target directory should be present before copying the files. Let us first create ‘files.backup’ directory and then copy the files.
-	
-Note: To copy more than one file data into another file we will use cat command
-    $ cat f1.txt f2.txt > f3.txt 
+$ cp file1 file2 file3 files.dir
 
+5.copy one file data into another file preserving the original file attributes.(permissions, ownership, timestamps).
+$ cp -p f1 f2
+
+6.adds interactive mode to the copy command before its coping.
+$ cp -i f1 f2
+
+->ensure that the target directory should be present before copying the files. Let us first create ‘files.backup’ directory and then copy the files.
+
+Note: To copy more than one file data into another file we will use cat command
+$ cat f1.txt f2.txt > f3.txt
 
 1. Copying a directory - Scenario1
-  $ cp -r linux /tmp
+$ cp -r linux /tmp
 
 2. coping a dirctory into different directory with new dir
- $  cp -r linux /tmp/linux.backup
+$ cp -r linux /tmp/linux.backup
 
 
-wc:
+
+mv:
 ===
-wc : word count command
+mv : rename & move from one location to another location
+$ mv <present-name> <new-name>
+$ mv <present-location> <new-location>
 
-      $ wc f1.txt  (no.of lines, no.of words, no.of chars)    
+When “mv” command is used to move a single file, either one of the following action is taken.
+=>If the destination is just a filename, the source file is renamed.
+=>If the destination is a directory path, the source file is moved to that path with the same name.
+=>If the destination is a directory path along with a filename, the source file is moved to that path, with the newly specified name.
 
-cmp : Compare file
-
-	  $ cmp f1.txt f2.txt    
 
 
 
@@ -454,13 +406,23 @@ options:
 >tar -tvf files_archive.tar                  -->To list the content of the archive without extracting.
 >tar -tvzf files_archive2.tar                -->To list the content of the zipped archive without extracting.
 >tar -xvf files_archive.tar                  -->To extract the files out of the archive.
->tar -rvf files_archive.tar file5            -->To add files to the existing archive.
+>tar -rvf files_archive.tar file5            -->To add/append files to the existing archive.
 	
 
-Soft Link and Hard Link:
+If you want to remove originals after archiving:
+-----------------------------------------
+# tar --remove-files -cvf archive.tar f1 f2
+
+
+
+
+
+LINKS:
+======
+SOFT Link and HARD Link:
 ==========================
 =>A link file is a pointer to  the original file. 
-->soft link: points to the original file not its location in the filesystem. Symbolic links (or softlinks) are more like shortcuts.
+->soft link: A symbolic link is a special file that contains a path to another file or directory. Symbolic links (or softlinks) are more like shortcuts.
   --------
 Syntax:
     >ln -s <original file> <link file>
@@ -468,15 +430,101 @@ Syntax:
 ->The number of links to a file does not change with the creation of a soft link since both are two different files.
 ->if orifginal file is deleted soft link will invalid.
 
-->hard link: is just another filename pointing to the actual content of the original file. 
+->hard link: is just another filename pointing to the actual content of the original file. It points directly to the file’s inode.
   ---------
 syn:
    >ln <original file> <linkfile>
 ->the number of links to the file increases. 
 ->inode number is same as original file.
 ->if orifginal file is deleted hard link will valid.
+->Cannot be created for directories (to avoid loops).
 
 
+
+
+2)Text processing commands:
+=============================
+
+cat:  create file with data + append data to file + print file data	
+=====	
+
+		$ cat > f1.txt 
+
+		$ cat >> f1.txt
+
+		$ cat f1.txt
+
+		$ cat -n f1.txt            
+
+		$ cat f1.txt f2.txt > f3.txt
+
+
+
+echo:
+=====
+->echo command in Unix/Linux is used to display a line of text on terminal. and also used to create file.
+-n   : prevents the trailing newline.
+-e   : enables interpretation of backslash escapes.
+       ex: echo -e "Hello,\nWorld!"
+       op: Hello,
+           World!
+
+
+To create file:
+---------------
+echo "content" > file
+
+=>To remove the content of the file but not the file:
+  --------------------------------------------------	
+1st way:
+   >echo -n "" >filename
+
+2nd way:
+    >cat /dev/null > filename        --/dev/null is a special device file that discards all data written to it.
+                                        c → Character device file
+                                        b → Block device file
+
+
+
+view the contents of file:
+===========================
+cat
+tac
+rev
+head
+tail
+more
+less
+
+->cat,tac,rev will display total content at a time.
+->if it is huge content then we have to navigate head,tail,more,less
+
+
+tac : To print file content from bottom to top
+
+    $ tac f1.txt
+
+rev : To reverse each line of data
+
+    $ rev f1.txt
+
+
+
+more & less:
+===========
+=>to view the content of the file page by page.
+=>less is more powerful than more.
+
+more: to view the content page by page in fw direction only.
+less:  to view the content page by page in bidirection.
+   press 'd' --> To go to next page
+   press 'b' --> To go to previous page
+
+
+
+
+
+  
 
 Filtering Rows in a File:
 =========================
@@ -486,7 +534,7 @@ head : To display file data from top (default 10 lines)
 
 	$ head f1.txt   (it will print firat 10 lines by default)
 
-	$ head -n 5 f1.txt   (print first 5 lines only)
+	$ head -n 15 f1.txt   (print first 15 lines only)
 
 	$ head  -15 f1.txt   (print first 15 lines only)
         
@@ -501,7 +549,7 @@ tail : To display file data from bottom (default 10 lines)
 
       $ tail -n 20 f1.txt  (print last 20 lines of file)
 
-      $ tail -n 100 f1.txt (print last 100 lines of file)
+      $ tail -20 f1.txt (print last 20 lines of file)
       
       $ tail -n +10 f1.txt (print the lines from 10 line of file)
 
@@ -519,15 +567,7 @@ Ex: /var/log/syslog, /var/log/messages
 Application Logs: Often stored in subdirectories within /var/log/
 Ex: /var/log/apache2/ for Apache web server logs
 
-wc:
-===
-->wc means word count.
-  >wc filename
 
-options:
--l --> To print only no.of lines
--w --> To print only no.of words
--c --> To print only no.of charcters
 
 
 =>Filtering Columns in a File:
@@ -535,6 +575,8 @@ options:
 
 cut:  It prints only a section of each line in a file. 
 =====
+Options: -d,-f,-c
+
 1.Display a single field
    >cut -d ":" -f1 /etc/passwd
 
@@ -562,10 +604,31 @@ cut:  It prints only a section of each line in a file.
    >cut -d ":" --complement -f 3,5 /etc/passwd   --> it will display all columns except 3 and 5 
 
 
-sort:
+
+
+WC:
+===
+wc : word count command
+
+      $ wc f1.txt  (no.of lines, no.of words, no.of chars)   
+      options: -l, -w, -c
+
+options:
+-l --> To print only no.of lines
+-w --> To print only no.of words
+-c --> To print only no.of charcters
+
+
+
+
+SORT:
 =====
 sort: To sort the content of the file.
-  syn: sort filename
+       syn: sort filename                  
+       Options: -n,-f,-r,-t,-k,-M,-g,-h,-u
+
+Default Sorting Order (lexicographic)    ===>Space < digits < uppercase letters < lowercase letters
+                                              
 1. Sorting text data:
     >sort users
 ->by default sorting based on alphabetical order.
@@ -579,25 +642,63 @@ options:
 -r --> To sort the revere alphabetical order and sort numerical data in the descending order.
 -n --> to sort in numeric value. 	
      >sort -r -n numbers
+     >-M	Sort by month name (JAN, FEB, …).
+     > General numeric (-g)
+     > Human‑readable (-h)
 
 3. Sort a file based on a field:
-    >tail /etc/passwd | sort -nt ":" -k3 
+    >tail /etc/passwd | sort -n -t ":" -k3 
 ->option ‘-t’ specifies the field separator.
 ->option ‘-k’ refers to key.
 ->Using the “sort” command, a file can be sorted based on a specific field. 
    
+4. Remove duplicates while sorting:
+    >sort -u employees.txt
+
+5. ignore case while sorting,       Case‑insensitive (-f)
+    >sort -f words.txt
+
+
+NOTE: Explanation: "10" comes before "2" because '1' < '2' in string comparison. Uppercase letters (B, Z) come before lowercase (a).
+
+
+
+
 
 UNIQ:
 =====
 =>The uniq command helps to detect any duplicate entity inside a text file to avoid redundancy.
+Options: -c,-u,-i,-d,-D
+banana
+banana
+orange
+Orange
+orange
+apple
+APPLE
+APPLE
+banana
 
-1.Printing the each line with Number of Times a Line is Repeated
+syn: uniq fn
+      banana
+      orange
+      Orange
+      orange
+      apple
+      APPLE
+      banana
+
+1.Print how many times each line appeared consecutively.
 $ uniq -c mv.txt
-ex: 2 apple
-    1 banana
-    3 cherry
+ex:   2 banana
+      1 orange
+      1 Orange
+      1 orange
+      1 apple
+      2 APPLE
+      1 banana
 
-2.only print duplicate lines, one for each group 
+2.Prints only lines that were duplicated., one for each group 
 $ uniq -d mv.txt
 
 3.Printing All the Duplicate Lines 
@@ -609,18 +710,67 @@ $ uniq -D mv.txt
 5. Case-insensitive Comparison
 $ uniq -i mv2.txt
 
+=>Since uniq only removes adjacent duplicates, you often combine it with sort:
+   >sort data.txt | uniq
+
+
+
+
+
+tr: is used for translating, squeezing, or deleting charcters.
+===
+      syn: tr <options> set             -->set refers to string of charcters.
+                                        options: -s,-d
+
+A)Translating:
+---------------
+a)translate lower case into upper case:    cat f1 | tr [:lower:] [:upper:]
+b)translate upper case into lower case:    cat f1 | tr [:upper:] [:lower:]
+c)translate one char into another     :    cat f1 | tr 't' 'T'
+d)Complement a character set          :     The option ‘-c’ can be used with “tr” command to replace all the characters except those specified in the set.
+      syn: cat demo1.txt | tr -c 'Unix' '#'
+
+  ->It can be seen that all the characters are replaced by ‘#’ except for the characters ‘U’, ‘n’, ‘i’ and ‘x’ in ‘Unix’ set.
+    Note: The characters to be replaced may or may not occur consecutively.
+
+B)Squeezing:
+------------
+a)Squeeze repeating characters    :The option ‘-s’ can be used with ”tr” command to replace a sequence of repeating characters with a single occurrence of that character.
+      syn: cat demo1.txt | tr -s " "
+->Here, the repeated space characters are squeezed into single space.
+
+b) Squeeze and translate          :
+        syn: cat demo1.txt | tr -s " " ":"
+->Here, the repeated space characters are first squeezed into single space. Then, each space character is translated into ‘:’ characte
+
+
+C)Deleting:
+------------
+The option '-d' can be used with “tr” command to delete the specified characters.
+
+i. Delete a character          :           cat demo1.txt | tr -d 'a'
+
+i. Delete multiple characters  :            cat demo1.txt | tr -d 'ae'
+
+Note: The characters to be deleted may or may not occur consecutively.
+
+
+
+
+
 
 grep:
 ======
 grep : grep stands for global regular expression print
 
 =>grep is used to search for specific patterns within files.
+      Options: -A,-B,-V,-i,-n,-o,-w,-c,-v,-l, -E, -e ,-x, -r
 
-	  $ grep 'aws' f1.txt   (print lines having aws keyword)
+      $ grep 'aws' f1.txt   (print lines having aws keyword)
 
       $ grep -i 'AWS' f1.txt (ignore case sensitive)
 
-      $ grep -n 'aws' f1.txt (print lines having aws with line number)
+      $ grep -n 'aws' f1.txt (Show line numbers with matches)
 
       $ grep -i -n 'linux' *  (search linux in all files of pwd)
       
@@ -628,11 +778,17 @@ grep : grep stands for global regular expression print
     
       $ grep -c "pattern" filename   (to count the number of matching lines)
 
-      $ grep -o "apple" example.txt | wc -l (This command will count each occurrence of "apple" and output the total number)clea
+      $ grep -o "apple" example.txt | wc -l (This command will count each occurrence of "apple" and output the total number)clearly.
 
       $ grep -w "linux" f1.txt (print the lines exact matching pattern)
 
+      $ grep -x "linux" data.txt (Matches only lines that are exactly linux)
+
+      $ grep -l "linux" *.txt (Prints filenames containing linux)
+
       $ grep -v "linux: f1.txt ( print all the lines except given pattern)
+     
+      $ grep -r "main" ./src (Searches all files under ./src)
 
       $ grep "^lin" f1.txt (print the lines which starting with given pattern)
 
@@ -643,9 +799,10 @@ grep : grep stands for global regular expression print
       $ grep "\<li" f1.txt (find words starting with text in file )
 
       $ grep "x/>" f1.txt (find words ends with text in file )
+
       $ grep -A2 'pattern' file (it dispaly pattern matches lines and 2 lines after the the matched lines
       $ grep -B2 'pattern' file (it dispaly pattern matches lines and 2 lines Before the the matched lines
-      $grep -c2 'pattern' file (it dispaly pattern matches lines and 2 lines Before & 2 lines after the the matched lines
+      $grep -C2 'pattern' file (it dispaly pattern matches lines and 2 lines Before & 2 lines after the the matched lines
 
 grep -L 'example' *.txt
 
@@ -657,23 +814,67 @@ grep -F "java
 aws
 linux" f1.txt
 
-
-
-=>search multiple contents in a file.
+=>search multiple patterns in a file.
  -------------------------------------
   >grep -e 'aws' -e 'java' f1.txt
+  > grep -E 'error|apple' grep
+->instead of using -e ,-E option we can use egrep command.
 
-->instead of using -e option we can wse egrep command.
 ->egrep means extended grep.
-   >egrep '(aws|java)' f1.txt
+   >egrep 'aws|java' f1.txt
+
+#Show only the matching part (just the email addresses):
+   >grep -oE "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}" fn
+
+# Customer wants only the IP addresses from logs  
+→ grep -oE "[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+" access.log     -o --->extract exact pattern, E -->extended reg expresion   + -->one or more charcters 
+
+Why -E is used
+By default, grep uses basic regex, where certain operators (+, ?, {}) are treated as literal characters unless you escape them with \.
+       >grep "[0-9]\+" file
+
+With -E, you enable extended regex, where operators like +, ?, {} work directly without needing a backslash.   
+       >grep -E "[0-9]+" file
+
+
+
+sample data:
+------------
+unix is simple
+linux is simple to learn
+123
+$
+Unix learn, and also linux learn
+your wish
+@
+but learn anything
+$ grep "^[[:alnum:]]" fn (print lines which starting with number and alphabates)
+$ grep "^[[:alpha:]]" fn (print lines which starting with alphabates)
+$ grep "^[[:blank:]]" fn (print lines which starting with space)
+$ grep "^[[:digit:]]" fn (print lines which starting with numbers)
+$ grep "^[[:lower:]]" fn (print lines which starting with small alphabates)
+$ grep "^[[:upper:]]" fn (print lines which starting with higher alphabets)
+$ grep "^[[:punct:]]" fn (print lines which starting with special characters)
+
+
 
 
 CMP & Diff:
 ===========
+Both are used to compare files.
+
 cmp: will compare text from the files byte by byte.
 ->cmp provides minimal output, showing only the first difference.
+->cmp tells you the first byte and line where the files differ.
 ->cmp is useful for binary files.
+
+ex:  file1.txt               file2.txt
+         Hello World                Hello World
+        This is a Test             This is a test
+
 syn:  cmp file1.txt file2.txt
+o/p: file1.txt file2.txt differ: byte 21, line 2
+
 
 diff:  Compares two files line by line. 
 ->diff provides a detailed list of all differences.
@@ -681,6 +882,9 @@ diff:  Compares two files line by line.
 syn: diff file1 file2
 
 
+
+
+====================================================================================================================================
 
 DU (Disk Usage):
 ================
@@ -698,6 +902,7 @@ DF(Disk Free):
 -> It's a handy tool for monitoring disk usage and ensuring you have enough space for your files and applications.
      ->$ df    -- To see the disk space usage of all mounted file systems, 	 	
      ->$ df -h  -- To display sizes in a more readable format (e.g., KB, MB, GB), 
+     ->df .     -- it will display the disk space usage of the fs containing the current dir.
      ->df -a or --all: Includes dummy file systems.
      ->df -T or --print-type: Shows the file system type.
      ->df -i or --inodes: Displays inode information instead of block usage.
@@ -706,19 +911,35 @@ DF(Disk Free):
      ->df -k,m --display informaation in kilo bytes, mega bytes.
 
 
+
+Process:
+========
+A process is an instance of Running program.
+Types:
+------
+1)Foreground
+2)Background  - to execute any command in bg, use command &   ex: pwd &
+
+
 PS(Process Status):
 ==================
 ->The ps (process status) command in Linux is used to display information about active processes,which includes both running and sleeping processes on the system.
-    ->$ ps  --  show the processes running in the current shell.
-    ->$ ps -e -- To list all processes running on the system,including those not started by the current user.
-    ->$ ps -f -- To display a full-format listing.
-    ->$ ps -a -- This option shows processes for all users that are associated to the terminal, not just the current user.
-    ->$ ps -u --  is used to display information about processes for a specific user.  $ps -u root
-    ->$ ps -x -- used to display information about processes that do not have a controlling terminal. This includes background processes and system daemons.
-    ->$ ps aux -- to get a detailed view of all processes.
-    ->$ps -ef  -- Full-format listing of all processes.
+    ->$ ps  --  show the processes running in the current shell(Only processes that are attached to the same terminal (your login shell).
+
+$ ps
+  PID TTY          TIME CMD
+ 1234 pts/0    00:00:00 bash
+ 1256 pts/0    00:00:00 ps
+
+    ->$ ps -e or -A     -- To list all processes running on the system,including those not started by the current user.
+    ->$ ps -f           -- To display a full-format listing.
+    ->$ ps -a           -- This option shows processes for all users that are associated to the terminal, not just the current user.
+    ->$ ps -u           --  is used to display information about processes for a specific user.            ---$ps -u root
+    ->$ ps -x           -- used to display information about processes that do not have a controlling terminal. This includes background processes and system daemons.
+    ->$ ps aux          -- to get a detailed view of all processes.
+    ->$ps -ef           -- Full-format listing of all processes.
     ->ps aux --sort=-%mem --sort the processes based on memory 
-    -> ps -eo pid,ni  -- sed to display the Process ID (PID) and the nice values (NI) of every process running on the system.
+    -> ps -eo pid,ni    -- sed to display the Process ID (PID) and the nice values (NI) of every process running on the system.
           ps: The command to display information about active processes.
           -e: Selects all processes.
          -o pid,ni: Specifies the output format to include only the PID and the nice value.
@@ -729,7 +950,59 @@ ps: Shows processes for the current user and terminal.
 ps a: Shows processes for all users with a terminal.
 ps -e: Shows all processes from all users, regardless of terminal.
 
- 
+
+🔎 Key Difference: BSD vs UNIX Syntax
+ps aux → BSD-style options (no dash -).
+
+ps -ef → UNIX System V–style options (with dash -).
+
+=>Both commands show all processes, but the columns and formatting differ.
+
+Example Outputs
+BSD style (ps aux):
+=====================
+USER   PID %CPU %MEM VSZ   RSS TTY   STAT START   TIME COMMAND
+root     1  0.0  0.1  1580  540 ?     Ss   Apr20   0:00 init
+anil  1234  0.1  0.3  2500 1200 pts/0 R+   19:38   0:00 ps aux
+
+UNIX style (ps -ef):
+====================
+UID   PID  PPID  C STIME TTY   TIME CMD
+root    1     0  0 Apr20 ?     0:00 init
+anil 1234  1220  0 19:38 pts/0 0:00 ps -ef
+
+
+
+🔎 What “All Processes” Includes
+----------------------------------------
+Running processes → actively executing on CPU.
+Sleeping processes → waiting for an event or resource (most processes spend time here).
+Stopped processes → paused (e.g., via Ctrl+Z).
+Zombie processes → terminated but still in the process table until the parent acknowledges.
+
+
+
+📌 How to Identify Process States:
+--------------------------------------
+=>Look at the STAT column in ps aux or ps -ef:
+
+State	Code	Meaning
+R	Running	Actively using CPU
+S	Sleeping	Waiting for event (interruptible sleep)
+D	Uninterruptible sleep	Waiting for I/O
+T	Stopped	Suspended (e.g., kill -STOP)
+Z	Zombie	Process finished but not cleaned up
+I	Idle	Kernel thread idle
+S → Sleeping (waiting for input).
+s → Session leader (like your login shell).  -- Ss means: a sleeping process that is also the session leader (commonly your shell process).
++  → Process is in the foreground of the terminal.
+l → Multi-threaded (using CLONE_THREAD).
+< → High-priority process.
+N → Low-priority process (nice value > 0).
+
+
+
+
 Top:
 =====
 =>used to display real-time information about system processes, including CPU and memory usage.
@@ -784,9 +1057,13 @@ reboot   system boot  5.4.0-104-generic Mon Mar 13 10:00   still running
 	
 ->This output shows the date and time of the last system reboot.
 
+
+
 umask:
 =====
 =>that determines the set default permissions for newly created files and directories.
+
+
 
 stat:
 =====
@@ -808,6 +1085,8 @@ gzip -l filename.gz : List the compressed file's contents.
 gzip -r directory/  : Recursively compress files in directories.
 gzip -9 filename    : Set the compression level (1 = fastest, 9 = best compression).
 
+
+
 tar:
 =====
 Purpose: tar is an archiving tool used to combine multiple files into a single archive file.
@@ -815,13 +1094,19 @@ Function: It creates a .tar file that contains multiple files and directories.
 Usage: Commonly used to bundle files together. For example, tar -cvf archive.tar directory/ will create an archive file archive.tar containing the contents of directory/.
 find /Desktop/Document/Application/ -type d -exec tar -cvzf {}.tar {} \;
 
+
+
 History:	
 =========
 =>used to display the list of previously executed commands in the terminal.
 
+
+
 uname:
 =====
 =>used to display system information. By default, it shows the system's kernel name(os).
+
+
 
 hostname:
 ==========
@@ -830,13 +1115,18 @@ hostname:
 hostname newname	                -- Temporarily sets a new hostname
 sudo hostnamectl set-hostname newname	-- Sets hostname permanently
 
+
+
 jobs -l:
 =========
 to list the jobs running in the background.
 
+
 fg:
 ===
 to bring a background process to the foreground.
+
+
 
 =======================
 Text Editors in Linux
@@ -917,6 +1207,7 @@ java is open source
 java is easy, i want to learn java
 java is having good demand in market
 java is oop based. java is easy.
+java is JAVA is java JAva
 
 1. Searching and Replacing:
 ----------------------------
@@ -929,21 +1220,30 @@ $ sed 's/java/python/' data.txt  | nl
 # Replace second occurance of 'java' with 'python' in every line
 $ sed 's/java/python/2' data.txt
 
+# Replace from the 2nd occurrence onward in every line
+$ sed 's/java/python/2g' data.txt
+
 # Replace third occurance of 'java' with 'python' in every line
 $ sed 's/java/python/3' data.txt
 
 # Replace all occurances of 'java' with 'python' in every line
 $ sed 's/java/python/gi' data.txt                                 i -- case insensitive
 
+#To substitute java with python only on lines that contain the word is 'good'
+$ sed '/good/s/java/python/g' data.txt
+
 # Replace all occurrences of a word in a specific line 
 $ sed ‘1s/Bash/Shell/g’ file0.txt
 
-# Replace all occurrence of a word in a specific lines
+# Replace all occurrence of a word in range of lines
 $ sed '1,3s/Bash/Shell/g' file0.txt
+
+#To replace all occurrences of a word in a selected line
+$ sed '3s/java/python/g; 5s/java/python/g; 7s/java/python/g' file.txt
 
 #Replace multiple words.
 $ sed 's/java/python/g;s/is/are/g' ak1.txt
-(or)
+(or)                                                             -e --expression
 $ sed -e 's/java/python/g' -e 's/is/are/g' ak1.txt
 
 # Substitute and save changes in original file
@@ -977,6 +1277,8 @@ $ sed '/python/d' data.txt
 #delete all lines bw the mentioned.
 $ sed '/python is a/,/source/d' f1
 
+# delete empty lines from a file
+$ sed '/^$/d' filename
 
 3. Displaying Lines from a File:
 -------------------------------
@@ -1006,11 +1308,10 @@ $ sed '3c\This is the new line' file.txt
 # add an empty line after each line in a file 
 $ sed G filename
 
-# delete empty lines from a file
-$ sed '/^$/d' filename
-
 # to keep backup original file.
 $ sed -i.bak 's/old-text/new-text/g' filename
+
+
 
 
 ====================
@@ -1023,7 +1324,10 @@ What is AWK Command
 
 => awk takes input, processes it line by line, and performs actions based on specified patterns and rules.
 
-Sytax : awk 'pattern { action }' file
+Sytax : awk options 'selection_criteria { action }' input_file
+
+options:
+-F  :use fs for the filed separator.
 
 $ cat > employees.txt 
 
@@ -1096,6 +1400,19 @@ $ awk 'NR >= 2' filename
 #print data of employees whose salary between 20000 and 50000
 $ awk '$NF>20000 && $NF<=50000' employees.txt 
 
+#print only records who are having 3 records.
+$ awk -F ',' 'NF==3 {print}' fn
+
+#print only records who are having moretham 3 records.
+$ awk -F ',' 'NF>3 {print}' fn
+
+#print only specific data
+$ awk -F "," '$3~/sales/{print}' fn
+
+#print the records having salary greter than 10000.
+$ awk -F "," '$4>10000{print}' fn
+
+
 Functions:
 ----------
 # replace a word with another.
@@ -1111,6 +1428,13 @@ $ awk '{print length($2)}' employees.txt
 $ awk '{print tolower($3)}' employees.txt 
 $ awk '{print toupper($3)}' employees.txt 
 
+
+#change the delimeter in o/p file.
+$ awk -F "," '{OFS='-'}{print}' fn           ---OFS is a bulit in variable.
+
+
+
+
 ===========================
 Users & Groups Management
 ===========================
@@ -1123,8 +1447,11 @@ Users & Groups Management
 
 Note: "ec2-user" is default user in amazon linux vm.
 
-# Create new user 
+# creates a user without a home directory.
 $ sudo useradd <username>
+
+#To create a user with a home directory:
+$ useradd -m username
 
 # set password for user
 $ sudo passwd <username>
@@ -1144,6 +1471,15 @@ $ usermod -e "" username
 # To check the account status, you can use:
 $ chage -l username
 
+Enforcing Password Policies
+# Password expiration: Set password expiry days
+$ chage -M 90 username
+
+# Lock a user account
+$ passwd -l username
+
+#Unlock a user account
+$ passwd -u username
 
 # Go to logged in user home directory
 $ cd ~

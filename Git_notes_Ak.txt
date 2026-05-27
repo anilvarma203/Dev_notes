@@ -459,7 +459,7 @@ MAVEN COMMANDS:   Build Process
 way-1:
 ------
 Step-1: Install Java (OpenJDK 8)
-     Command: yum install java-1.8.0-openjdk -y
+     Command: yum install java-1.8.0-openjdk -y                      <---this java version is standard version for maven,no other version are used.
 
 Step-2: Install maven
      i• Install Maven via yum                        --this is the direct option, choose any one option among 2.
